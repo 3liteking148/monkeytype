@@ -3,6 +3,7 @@ import { mean, roundTo2 } from "@monkeytype/util/numbers";
 import * as TestState from "./test-state";
 
 const keysToTrack = new Set([
+  "Backspace",
   "NumpadMultiply",
   "NumpadSubtract",
   "NumpadAdd",
@@ -78,6 +79,7 @@ type KeypressTimings = {
     first: number;
     last: number;
     array: number[];
+    chars: string[];
   };
   duration: {
     array: number[];
@@ -191,6 +193,7 @@ export let keypressTimings: KeypressTimings = {
     first: -1,
     last: -1,
     array: [],
+    chars: [],
   },
   duration: {
     array: [],
@@ -326,11 +329,13 @@ export function recordKeydownTime(now: number, key: string): void {
   if (keypressTimings.spacing.last !== -1) {
     const diff = Math.abs(now - keypressTimings.spacing.last);
     keypressTimings.spacing.array.push(roundTo2(diff));
+    keypressTimings.spacing.chars.push(key);
     console.debug("Keydown recorded", key, diff);
   }
   keypressTimings.spacing.last = now;
   if (keypressTimings.spacing.first === -1) {
     keypressTimings.spacing.first = now;
+    keypressTimings.spacing.chars.push(key);
     console.debug("First keydown recorded", key, now);
   }
 }
@@ -355,6 +360,7 @@ export function resetKeypressTimings(): void {
       first: -1,
       last: -1,
       array: [],
+      chars: [],
     },
     duration: {
       array: [],
@@ -418,6 +424,7 @@ export function restart(): void {
       first: -1,
       last: -1,
       array: [],
+      chars: [],
     },
     duration: {
       array: [],

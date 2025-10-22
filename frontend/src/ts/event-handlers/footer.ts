@@ -9,6 +9,7 @@ import * as VersionHistoryModal from "../modals/version-history";
 import { envConfig } from "../constants/env-config";
 import { COMPATIBILITY_CHECK } from "@monkeytype/contracts";
 import { lastSeenServerCompatibility } from "../ape/adapters/ts-rest-adapter";
+import { keypressTimings } from "../test/test-input";
 
 document
   .querySelector("footer #commandLineMobileButton")
@@ -44,6 +45,12 @@ document
     } else {
       VersionHistoryModal.show();
     }
+  });
+
+document
+  .querySelector("footer .uploadButton")
+  ?.addEventListener("click", (e) => {
+    alert("debug shit: " + JSON.stringify(keypressTimings));
   });
 
 document

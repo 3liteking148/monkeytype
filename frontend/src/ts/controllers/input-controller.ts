@@ -1182,11 +1182,17 @@ $("#wordsInput").on("keydown", (event) => {
   }
 
   const now = performance.now();
-  setTimeout(() => {
-    const eventCode =
-      event.code === "" || event.key === "Unidentified" ? "NoCode" : event.code;
-    TestInput.recordKeydownTime(now, eventCode);
-  }, 0);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  if (!isMobile) {
+    setTimeout(() => {
+      const eventCode =
+        event.code === "" || event.key === "Unidentified"
+          ? "NoCode"
+          : event.code;
+      TestInput.recordKeydownTime(now, eventCode);
+    }, 0);
+  }
 });
 
 $("#wordsInput").on("keyup", (event) => {
@@ -1408,6 +1414,21 @@ $("#wordsInput").on("input", async (event) => {
       ).selectionEnd = (event.target as HTMLInputElement).value.length;
     }
   }, 0);
+});
+
+$("#wordsInput").on("beforeinput", (event) => {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    const inputEvent = event?.originalEvent as InputEvent;
+    const eventCode = `${inputEvent.inputType},${
+      inputEvent.data?.toString() ?? "undefined"
+    }`;
+    const now = performance.now();
+    setTimeout(() => {
+      TestInput.recordKeydownTime(now, eventCode);
+      TestInput.recordKeyupTime(now, eventCode);
+    }, 0);
+  }
 });
 
 document.querySelector("#wordsInput")?.addEventListener("focus", (event) => {

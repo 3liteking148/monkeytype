@@ -2,7 +2,7 @@ import { lastElementFromArray } from "../utils/arrays";
 import { mean, roundTo2 } from "@monkeytype/util/numbers";
 import * as TestState from "./test-state";
 
-const keysToTrack = new Set([
+const _keysToTrack = new Set([
   "Backspace",
   "NumpadMultiply",
   "NumpadSubtract",
@@ -281,7 +281,7 @@ export function forceKeyup(now: number): void {
 let noCodeIndex = 0;
 
 export function recordKeyupTime(now: number, key: string): void {
-  if (!keysToTrack.has(key)) return;
+  //if (!keysToTrack.has(key)) return;
 
   if (key === "NoCode") {
     noCodeIndex--;
@@ -303,10 +303,10 @@ export function recordKeyupTime(now: number, key: string): void {
 }
 
 export function recordKeydownTime(now: number, key: string): void {
-  if (!keysToTrack.has(key)) {
-    console.debug("Key not tracked", key);
-    return;
-  }
+  // if (!keysToTrack.has(key)) {
+  //   console.debug("Key not tracked", key);
+  //   return;
+  // }
 
   if (key === "NoCode") {
     key = "NoCode" + noCodeIndex;

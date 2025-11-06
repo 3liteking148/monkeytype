@@ -50,13 +50,17 @@ document
 document
   .querySelector("footer .uploadButton")
   ?.addEventListener("click", async (e) => {
+    const uploadData = {
+      ...structuredClone(keypressTimings),
+      timestamp: new Date(),
+    };
     const backendUrl = `${window.location.protocol}//${window.location.hostname}:3001`;
     const ret = await fetch(`${backendUrl}/api/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(keypressTimings),
+      body: JSON.stringify(uploadData),
     });
     alert(ret.status === 201 ? "Uploaded to DB successfully" : "Error");
   });

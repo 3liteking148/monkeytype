@@ -49,8 +49,16 @@ document
 
 document
   .querySelector("footer .uploadButton")
-  ?.addEventListener("click", (e) => {
-    alert("debug shit: " + JSON.stringify(keypressTimings));
+  ?.addEventListener("click", async (e) => {
+    const backendUrl = `${window.location.protocol}//${window.location.hostname}:3001`;
+    const ret = await fetch(`${backendUrl}/api/submit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(keypressTimings),
+    });
+    alert(ret.status === 201 ? "Uploaded to DB successfully" : "Error");
   });
 
 document
